@@ -1,10 +1,13 @@
-import { APITester } from "./APITester";
-
-import logo from "./logo.svg";
-import reactLogo from "./react.svg";
+import { GetPosts} from "@/posts/GetPosts.tsx";
 
 export function App() {
-
+  return (
+    <div>
+      <title>Chatter</title>
+      <button>Post</button>
+      <GetPosts />
+    </div>
+  );
 }
 
 export default App;
