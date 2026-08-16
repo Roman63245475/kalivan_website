@@ -1,24 +1,20 @@
-import { APITester } from "./APITester";
 import {SearchComponent} from "@/search.tsx";
 import "./index.css";
 
-import logo from "./logo.svg";
-import reactLogo from "./react.svg";
 import {type Component, useEffect, useState} from "react";
 import type Post from "@/post.ts";
 import * as React from "react";
 
-
-
-
-export function App(search: boolean = false, input: string = '') {
+export function App() {
     const [posts, setPosts] = useState<Post[]>([]);
+    const [searchText, setSearchText] = useState('');
     useEffect(() => {
-        if (search){
-            console.log('hi')
+        if (searchText.trim() !== "") {
+            fetch('https://dummyjson.com/posts/search?q='+searchText).then(res => res.json()).then(json => setPosts(json.posts));
+        }else{
+            fetch('https://dummyjson.com/posts').then(res => res.json()).then(json => setPosts(json.posts));
         }
-        fetch('https://dummyjson.com/posts').then(res => res.json()).then(json => setPosts(json.posts));
-    },[])
+    },[searchText])
 
     function deletePost(postId: number){
         setPosts(posts.filter((post) => post.id !== postId));
@@ -26,7 +22,7 @@ export function App(search: boolean = false, input: string = '') {
 
   return (
       <div className={'whole_page'}>
-          <SearchComponent />
+          <SearchComponent currSearchText={searchText} updateSearch={setSearchText} />
           <div className={'feed'}>
               {posts.map(post => (
                   <GetSinglePost key={post.id} post={post} onDelete={deletePost}/>
