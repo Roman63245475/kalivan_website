@@ -5,6 +5,8 @@ import "./index.css";
 import logo from "./logo.svg";
 import reactLogo from "./react.svg";
 
+export const myAmazingVar = "test";
+
 export function App() {
   return (
     <div className="app">
