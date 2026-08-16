@@ -1,4 +1,5 @@
 import { APITester } from "./APITester";
+import {SearchComponent} from "@/search.tsx";
 import "./index.css";
 
 import logo from "./logo.svg";
@@ -17,6 +18,7 @@ export function App() {
         Edit <code>src/App.tsx</code> and save to test HMR
       </p>
       <APITester />
+        <SearchComponent />
     </div>
   );
 }
