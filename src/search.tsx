@@ -1,22 +1,16 @@
 import {useState} from "react";
 
-export function SearchComponent(){
-
-    const [searchText, setSearchText] = useState('');
-
-    function updateSearch(query: string){
-        setSearchText(query);
-    }
-
-    async function onSearch(){
-        const response = await fetch('https://dummyjson.com/posts/search?q='+searchText)
-        const json = await response.json();
-    }
+export function SearchComponent({currSearchText, updateSearch}){
+    const [inputText, setInputText] = useState("");
 
     return(
         <div>
-            <input placeholder="Search..." onChange={(e) => updateSearch(e.target.value)} value={searchText} />
-            <button onClick={onSearch}>🔎</button>
+            <input placeholder="Search..." onChange={(e) => setInputText(e.target.value)} value={inputText} />
+            <button onClick={() => updateSearch(inputText)}>🔎</button>
+            <button onClick={() => {
+                setInputText("");
+                updateSearch("");
+            }}>↩️</button>
         </div>
     );
 }
