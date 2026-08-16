@@ -20,27 +20,57 @@ export function App(search: boolean = false, input: string = '') {
         fetch('https://dummyjson.com/posts').then(res => res.json()).then(json => setPosts(json.posts));
     },[])
 
+    function deletePost(postId: number){
+        setPosts(posts.filter((post) => post.id !== postId));
+    }
+
   return (
       <div className={'whole_page'}>
           <SearchComponent />
           <div className={'feed'}>
-              {getFeed(posts)}
+              {posts.map(post => (
+                  <GetSinglePost key={post.id} post={post} onDelete={deletePost}/>
+              ))}
           </div>
       </div>
   );
 }
 
-function getFeed(posts: Post[]){
-    return posts.map(post => GetSinglePost(post));
+
+
+function GetSinglePost(props: {post: Post, onDelete: (postId: number) => void}) {
+    const post = props.post;
+    return (
+        <div>
+            <h1>{post.title}</h1>
+            <h2>{post.body}</h2>
+            {GetPrettyTags(post.tags)}
+            <h3>Likes: {post.reactions.likes} | Dislikes: {post.reactions.dislikes} | Views: {post.views}</h3>
+            <div className={'actions'}>
+                <button className={'delete_post'} onClick={() => props.onDelete(post.id)}>
+                    Delete Post
+                </button>
+
+                <button className={'view_post'}>
+                    View Post
+                </button>
+            </div>
+        </div>
+    )
 }
 
-function GetSinglePost(post: Post) {
+function GetPrettyTags(tags: string[]){
     return (
-        <div key={post.id}>
-            <h1>{post.title}</h1> <h3>Tags: {post.tags}</h3>
-            <h2>{post.body}</h2>
-            <h3>Likes: {post.reactions.likes}</h3> <h3>Dislikes: {post.reactions.dislikes}</h3>
-            <h3>Views: {post.views}</h3>
+        <div>
+            Tags:
+            <span style={{ marginLeft: "10px" }}>
+                {tags.map((tag, index) => (
+                    <span key={index}>
+                    <span style={{color : 'pink'}}>{tag}</span>
+                        {index < tags.length - 1 && ", "}
+                </span>
+                ))}
+            </span>
         </div>
     )
 }
