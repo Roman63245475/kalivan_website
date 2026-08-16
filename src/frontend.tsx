@@ -8,12 +8,16 @@
 import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
 import { App } from "./App";
+import {BrowserRouter, createBrowserRouter, RouterProvider} from "react-router";
 
 const elem = document.getElementById("root")!;
 const app = (
-  <StrictMode>
-    <App />
-  </StrictMode>
+  <RouterProvider router={createBrowserRouter([
+      {
+          path: '/',
+          element: <App/>
+      },
+  ])}/>
 );
 
 // https://bun.com/docs/bundler/hot-reloading#import-meta-hot-data
