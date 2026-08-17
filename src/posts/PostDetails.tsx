@@ -1,11 +1,12 @@
 import {useParams} from "react-router";
 import {useEffect, useState} from "react";
-import {Post} from "@/posts/GetPosts.tsx";
-
-
+import type {Post} from "@/posts/GetPosts.tsx";
+import {GetComments} from "@/posts/GetComments.tsx";
 export function PostDetails(){
+
     const {PostId} = useParams();
     const [post, setPost] = useState<Post | null>(null);
+    const [commentCount, setCommentCount] = useState(0);
     useEffect(()=>{
 
         async function fetchPost(){
@@ -20,6 +21,7 @@ export function PostDetails(){
     if(!post){
         <i>Post not found</i>
     }
+
     return (
         <div>
             {
@@ -43,7 +45,8 @@ export function PostDetails(){
                 </div>
             </article>
 
-            <h3><i>Comments</i></h3>
+            <h3><i>Comments ({commentCount})</i></h3>
+            <GetComments postid={post?.id} counter={setCommentCount}/>
         </div>
     );
 }

@@ -1,8 +1,10 @@
 import { APITester } from "./APITester";
 import "./index.css";
+import {useEffect, useState} from "react";
 
 import logo from "./logo.svg";
 import reactLogo from "./react.svg";
+import type Post from "@/post.ts";
 
 export function App() {
     const [posts, setPosts] = useState<Post[]>([]);
