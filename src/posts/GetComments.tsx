@@ -36,7 +36,7 @@ export function GetComments({postid, counter}: GetCommentsProps) {
             {
                 comments.map((comment: Comment) => {
                     return <div>
-                        <p><h3>{comment.body}</h3></p>
+                        <p><h3>{comment.body}   ❤️: {comment.likes}</h3></p>
                     </div>
                 })
             }

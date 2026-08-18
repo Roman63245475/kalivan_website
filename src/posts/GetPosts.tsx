@@ -45,7 +45,7 @@ export function GetPosts() {
                             ))}
                         </div>
                         <div>
-                            <i>❤︎ : {post.reactions.likes}   </i>
+                            <i>❤️ : {post.reactions.likes}   </i>
                             <i>💔 : {post.reactions.dislikes}   </i>
                             <i>👀 : {post.views}</i>
                         </div>
