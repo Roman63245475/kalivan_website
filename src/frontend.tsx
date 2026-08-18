@@ -9,6 +9,7 @@ import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
 import { App } from "./App";
 import {BrowserRouter, createBrowserRouter, RouterProvider} from "react-router";
+import {PostDetails} from "@/posts/PostDetails.tsx";
 
 const elem = document.getElementById("root")!;
 const app = (
@@ -17,6 +18,10 @@ const app = (
           path: '/',
           element: <App/>
       },
+      {
+          path:"/:PostId",
+          element: <PostDetails />
+      }
   ])}/>
 );
 
