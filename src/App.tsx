@@ -25,6 +25,7 @@ export function App() {
   return (
       <div className={'whole_page'}>
           <SearchComponent currSearchText={searchText} updateSearch={setSearchText} />
+          <PostButton setPosts={setPosts} />
           <div className={'feed'}>
               {posts.map(post => (
                   <GetSinglePost key={post.id} post={post} onDelete={deletePost} navigate={navigate} />
@@ -72,5 +73,74 @@ export function GetPrettyTags(tags: string[]){
         </div>
     )
 }
+function PostButton({ setPosts }: { setPosts: React.Dispatch<React.SetStateAction<Post[]>> }) {
+    const [showCreatePost, setShowCreatePost] = useState(false);
+    const [title, setTitle] = useState("");
+    const [body, setBody] = useState("");
+    const [tags, setTags] = useState("");
+    async function CreatePost() {
+        if (title.trim() === "" || body.trim() === "" || tags.trim() === "") {
+            return;
+        }
 
+        const response = await fetch("https://dummyjson.com/posts/add", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+                title,
+                body,
+                userId: 1,
+                tags: tags.split(" "),
+                views: 0,
+                reactions:  { likes: 0, dislikes: 0 }
+
+            }),
+        });
+
+        const newPost: Post = await response.json();
+
+        setPosts((currentPosts) => [newPost, ...currentPosts]);
+
+        setTitle("");
+        setBody("");
+        setTags("");
+        setShowCreatePost(false);
+    }
+
+    function modal() {
+        return (
+            <div className="modal-background">
+                <div className="create-post-modal">
+                    <button className="close-button" onClick={() => setShowCreatePost(false)} >❌️</button>
+
+                    <h2>Create Post</h2>
+                    <input
+                        type="text"
+                        placeholder="Post title"
+                        value={title}
+                        onChange={(e) => setTitle(e.target.value)}
+                    />
+                    <textarea
+                        placeholder="What's happening?"
+                        value={body}
+                        onChange={(e) => setBody(e.target.value)}
+                    />
+                    <input
+                        type="text"
+                        placeholder="tags"
+                        value={tags}
+                        onChange={(e) => {setTags(e.target.value)}}/>
+                    <button onClick={CreatePost}>Post</button>
+                </div>
+            </div>
+        );
+    }
+
+    return (
+        <div>
+            <button onClick={() => setShowCreatePost(true)}>Post</button>
+            {showCreatePost && modal()}
+        </div>
+    );
+}
 export default App;
