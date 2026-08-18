@@ -1,12 +1,16 @@
 import {useParams} from "react-router";
 import {useEffect, useState} from "react";
-import type {Post} from "@/posts/GetPosts.tsx";
+import type {Post} from "@/post.ts";
 import {GetComments} from "@/posts/GetComments.tsx";
+import {GetPrettyTags} from "@/App.tsx"
+import {useNavigate} from "react-router";
+
 export function PostDetails(){
 
     const {PostId} = useParams();
     const [post, setPost] = useState<Post | null>(null);
     const [commentCount, setCommentCount] = useState(0);
+    const navigate = useNavigate();
     useEffect(()=>{
 
         async function fetchPost(){
@@ -19,7 +23,7 @@ export function PostDetails(){
     }, [])
 
     if(!post){
-        <i>Post not found</i>
+        return <i>Post not found</i>
     }
 
     return (
@@ -32,12 +36,7 @@ export function PostDetails(){
             <article>
                 <h1>{post?.title}</h1>
                 <h3>{post?.body}</h3>
-                <div>
-                    {post?.tags.map(tag=>(
-                            <strong ># {tag} </strong>
-                        )
-                    )}
-                </div>
+                {GetPrettyTags(post.tags)}
                 <div>
                     <i>❤︎ : {post?.reactions.likes}   </i>
                     <i>💔 : {post?.reactions.dislikes}   </i>
@@ -47,6 +46,7 @@ export function PostDetails(){
 
             <h3><i>Comments ({commentCount})</i></h3>
             <GetComments postid={post?.id} counter={setCommentCount}/>
+            <button onClick={() => navigate('/')}>Get back</button>
         </div>
     );
 }

@@ -19,7 +19,7 @@ const app = (
           element: <App/>
       },
       {
-          path:"/:PostId",
+          path:"/post/:PostId",
           element: <PostDetails />
       }
   ])}/>

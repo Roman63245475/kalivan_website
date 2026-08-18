@@ -4,10 +4,12 @@ import "./index.css";
 import {type Component, useEffect, useState} from "react";
 import type Post from "@/post.ts";
 import * as React from "react";
+import {useNavigate} from "react-router";
 
 export function App() {
     const [posts, setPosts] = useState<Post[]>([]);
     const [searchText, setSearchText] = useState('');
+    const navigate = useNavigate();
     useEffect(() => {
         if (searchText.trim() !== "") {
             fetch('https://dummyjson.com/posts/search?q='+searchText).then(res => res.json()).then(json => setPosts(json.posts));
@@ -25,7 +27,7 @@ export function App() {
           <SearchComponent currSearchText={searchText} updateSearch={setSearchText} />
           <div className={'feed'}>
               {posts.map(post => (
-                  <GetSinglePost key={post.id} post={post} onDelete={deletePost}/>
+                  <GetSinglePost key={post.id} post={post} onDelete={deletePost} navigate={navigate} />
               ))}
           </div>
       </div>
@@ -34,7 +36,7 @@ export function App() {
 
 
 
-function GetSinglePost(props: {post: Post, onDelete: (postId: number) => void}) {
+function GetSinglePost(props: {post: Post, onDelete: (postId: number) => void, navigate: (path:string) => void}) {
     const post = props.post;
     return (
         <div>
@@ -47,7 +49,7 @@ function GetSinglePost(props: {post: Post, onDelete: (postId: number) => void}) 
                     Delete Post
                 </button>
 
-                <button className={'view_post'}>
+                <button className={'view_post'} onClick={() => props.navigate(`/post/${post.id}`)}>
                     View Post
                 </button>
             </div>
@@ -55,7 +57,7 @@ function GetSinglePost(props: {post: Post, onDelete: (postId: number) => void}) 
     )
 }
 
-function GetPrettyTags(tags: string[]){
+export function GetPrettyTags(tags: string[]){
     return (
         <div>
             Tags:
