@@ -78,6 +78,7 @@ function PostButton({ setPosts }: { setPosts: React.Dispatch<React.SetStateActio
     const [title, setTitle] = useState("");
     const [body, setBody] = useState("");
     const [tags, setTags] = useState("");
+
     async function CreatePost() {
         if (title.trim() === "" || body.trim() === "" || tags.trim() === "") {
             return;

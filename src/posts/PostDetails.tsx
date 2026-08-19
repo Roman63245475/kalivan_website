@@ -11,28 +11,45 @@ export function PostDetails(){
     const [post, setPost] = useState<Post | null>(null);
     const [commentCount, setCommentCount] = useState(0);
     const navigate = useNavigate();
+
+    const [loading, setLoading] = useState(true);
+    const [notFound, setNotFound] = useState(false);
+
     useEffect(()=>{
 
         async function fetchPost(){
-            const response = await fetch("https://dummyjson.com/posts/" + PostId);
+            try {
+                const response = await fetch(
+                    "https://dummyjson.com/posts/" + PostId
+                );
 
-            const data = await response.json();
-            setPost(data);
+                if (!response.ok) {
+                    setNotFound(true);
+                    return;
+                }
+
+                const data = await response.json();
+                setPost(data);
+            } catch (error) {
+                console.error(error);
+                setNotFound(true);
+            } finally {
+                setLoading(false);
+            }
         }
         fetchPost();
     }, [])
 
-    if(!post){
-        return <i>Post not found</i>
+    if (loading) {
+        return <p>Loading...</p>;
+    }
+
+    if (notFound || !post) {
+        return <p>Post not found</p>;
     }
 
     return (
         <div>
-            {
-                // JSON.stringify(post)
-
-            }
-
             <article>
                 <h1>{post?.title}</h1>
                 <h3>{post?.body}</h3>
